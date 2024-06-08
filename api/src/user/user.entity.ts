@@ -8,24 +8,27 @@ export class User {
   @Column()
   name: string;
 
-  @Column({name:"last_name"})
+  @Column()
   lastName: string;
 
-  @Column({name: "sex"})
+  @Column()
   sex: string;
 
-  @Column({name: "address"})
+  @Column()
+  birthDay: Date;
+
+  @Column()
   address: string;
 
-  @Column({name: "sub_district"})
+  @Column()
   subdistrict: string;
 
-  @Column({name: "district"})
+  @Column()
   district: string;
 
-  @Column({name: "province"})
+  @Column()
   province: string;
 
-  @Column({name: "card_number"})
-  cardNumber: string;
+  @Column()
+  cardExpiredDate: Date;
 }

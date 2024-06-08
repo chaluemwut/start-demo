@@ -8,23 +8,31 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-  ) {}
+  ) { }
 
-  // create(createUserDto: CreateUserDto): Promise<User> {
-    create(userDto: User): Promise<User> {
-    // const user = new User();
-    // user.name = createUserDto.name;
-    // user.lastName = createUserDto.lastName;
-
+  create(userDto: User): Promise<User> {
     return this.usersRepository.save(userDto);
   }
 
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({ order: { id: 'DESC' } });
   }
 
   findOne(id: number): Promise<User> {
     return this.usersRepository.findOneBy({ id: id });
+  }
+
+  async findCustom(month: number, isExpired: string): Promise<User[]> {
+    const db = this.usersRepository.manager
+    let sql = "select * from user where 1=1 "
+    let where = ""
+    if (month != 0) {
+      where = ` and month(birthDay) = ${month}`
+    }
+    if (isExpired === 'true') {
+      where = where + " and datediff(now(), cardExpiredDate) < 30"
+    }
+    return await db.query(sql + where)
   }
 
   async remove(id: string): Promise<void> {
